@@ -5,7 +5,7 @@ from std_msgs.msg import String
 from turtlesim.msg import Pose
 from geometry_msgs.msg import Twist
 from math import atan2, atan
-from turtle_regulation_KhertishLobine_NoreenSooltangos import waypoint
+from turtle_regulation_KhertishLobine_NoreenSooltangos.srv import waypoint
 
 global coords
 coords = [7,7]
@@ -14,7 +14,7 @@ def Subscriber_pose():
 	global turtlePose
 	turtlePose = None
 	rospy.init_node('set_way_point')
-	rospy.Service('set_waypoint_srv', coordinate, set_waypoint_service)
+	rospy.Service('set_waypoint_srv', waypoint, set_waypoint_service)
 	rospy.Subscriber('pose', Pose, getPosition)
 	pub = rospy.Publisher('cmd_vel', Twist, queue_size = 1)
 	rate = rospy.Rate(10)
