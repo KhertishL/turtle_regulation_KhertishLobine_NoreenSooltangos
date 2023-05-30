@@ -17,7 +17,7 @@ def Subscriber_pose():
 	pub = rospy.Publisher('cmd_vel', Twist, queue_size = 1)
 	rate = rospy.Rate(10)
 
-	kp = rospy.get_param("~kp", 1.0)
+	kp = rospy.get_param("~kp", 5.0)
 	kpl = rospy.get_param("~kpl", 1.0)
 
 	while not rospy.is_shutdown():
@@ -26,7 +26,7 @@ def Subscriber_pose():
 			rotate(kp, pub, rate)
 			is_moving(pub, rate, kpl)
 
-			print(message)
+			#print(message)
 
 def getPosition(pose):
 	global turtlePose
@@ -55,16 +55,14 @@ def is_moving(pub ,rate ,kpl):
 	x_length = (coords[0] - turtlePose.x)* (coords[0] - turtlePose.x)
 
 
-	e = math.sqrt(y_length + x_length)
+	distance_travelled = math.sqrt(y_length + x_length)
 
-	v = kpl * e
+	v = kpl * distance_travelled
 	message.linear.x = v
 	print("Commande Lineaire = ", v)
 
-	distance_travelled = 0
-	while(distance_travelled < e):
-		pub.publish(message)
-		rate.sleep()
+	pub.publish(message)
+	rate.sleep()
 
 
 
